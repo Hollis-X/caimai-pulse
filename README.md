@@ -7,6 +7,8 @@
   <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/license-MIT%2BNC-lightgrey?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/frontend-Vanilla_JS%2BCSS-yellow?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/design-Apple×Material-007AFF?style=for-the-badge" />
 </p>
 
 ---
@@ -27,6 +29,21 @@
 | 📰 资讯 | 卡片列表 + 右滑详情页 + 关键词搜索 + Markdown 链接自动解析 |
 | 📈 行情 | 8 品种实时报价 + SVG 蜡烛图（红涨绿跌，带上下影线） |
 | 📅 日历 | 249 条财经事件 · 重要性星级标注 · 前值/预期/公布对比 |
+
+## 🎨 前端组件
+
+> 纯原生实现，零框架依赖
+
+| 组件 | 实现 |
+|---|---|
+| 毛玻璃导航栏 | `backdrop-filter: saturate(180%) blur(20px)` |
+| 药丸 Tab 切换 | 横向滚动 + sticky 吸顶 |
+| 快讯时间轴 | 红点 + 实时淡入动画（`will-change`GPU加速） |
+| 资讯卡片 | Material 阴影 + 点击右滑 Push 详情页 |
+| SVG 蜡烛图 | 红涨绿跌 + 上下影线 + 网格 + 时间标 |
+| 骨架屏 / 内联 Loading | 渐变 shimmer → 简洁圆环旋转 |
+| iOS 底部导航 | 毛玻璃 + safe-area 适配 |
+| PWA 安装引导 | 首次访问右下角弹出提示 |
 
 ## 🛡️ 安全
 
