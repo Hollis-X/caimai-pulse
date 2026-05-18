@@ -28,14 +28,7 @@
 
 ## 前端
 
-```text
-原生 HTML/CSS/JS，Apple × Material Design
-无任何框架依赖，加载快
-SSE 实时接收快讯推送
-SVG 蜡烛图
-
-http://38.244.14.110:5000（演示）
-```
+原生 HTML/CSS/JS，Apple × Material Design，无任何框架依赖。SSE 实时接收快讯推送，SVG 蜡烛图。
 
 ## 后端
 
@@ -50,17 +43,13 @@ http://38.244.14.110:5000（演示）
 ## 部署
 
 ```bash
-docker compose up -d --build
+docker run -d --name caimai-pulse -p 5000:5000 \
+  -e JINTOKEN="sk-xxx" \
+  -e API_SECRET="your-secret" \
+  ghcr.io/hollis-x/caimai-pulse:latest
 ```
 
-需要环境变量：
-
-| 变量 | 说明 |
-|---|---|
-| `JINTOKEN` | 金十 Token（必填） |
-| `API_SECRET` | 接口鉴权 key |
-
-完整列表见 [docker-compose.yml](docker-compose.yml)。
+每次推送 main 分支自动构建到 [GHCR](https://github.com/Hollis-X/caimai-pulse/pkgs/container/caimai-pulse)。
 
 ## API
 
