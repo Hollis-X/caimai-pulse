@@ -11,92 +11,78 @@
 
 ---
 
-## ⚡ 实时快讯推送
+## 这是什么
 
-快讯每 **5 秒** 从金十 MCP 拉取，通过 **SSE** 实时推送至浏览器：
+抓取金十数据的移动端财经面板，手机上打开就能看：
 
-- 📍 你在页面顶部 → 新快讯自动淡入插入
-- 📜 你已向下滚动 → 顶部悬浮提示「N 条新快讯」+ 提示音
-- 🔄 断线 10 秒自动重连 · 页面隐藏自动断开
-- 🔒 最大 10 连接 · 单连接 30 分钟超时
+- ⚡ **快讯** — 实时推送，新消息自动弹出或悬浮提示
+- 📰 **资讯** — 卡片列表 + 关键词搜索 + 详情阅读
+- 📈 **行情** — 8 个品种报价 + 点开看蜡烛图
+- 📅 **日历** — 财经事件重要性标注
 
-## 📰 资讯 · 📈 行情 · 📅 日历
+前端 Apple × Material Design，后端 Flask + 金十 MCP，Docker 一条命令启动。
 
-| 模块 | 功能 |
+## 怎么用
+
+打开 `http://38.244.14.110:5000`，手机浏览器或桌面都行。底部四个 tab 切换，顶部可以搜索。
+
+## 前端
+
+```text
+原生 HTML/CSS/JS，Apple × Material Design
+无任何框架依赖，加载快
+SSE 实时接收快讯推送
+SVG 蜡烛图
+
+http://38.244.14.110:5000（演示）
+```
+
+## 后端
+
+| 能力 | 实现 |
 |---|---|
-| 📰 资讯 | 卡片列表 + 右滑详情页 + 关键词搜索 + Markdown 链接自动解析 |
-| 📈 行情 | 8 品种实时报价 + SVG 蜡烛图（红涨绿跌，带上下影线） |
-| 📅 日历 | 249 条财经事件 · 重要性星级标注 · 前值/预期/公布对比 |
+| 数据源 | [金十 MCP](https://mcp.jin10.com/mcp)，Bearer Token 认证 |
+| 通讯协议 | SSE（Server-Sent Events），浏览器长连接 |
+| 快讯频率 | 每 5 秒拉一次，发现新快讯立即推送 |
+| 鉴权 | Shared Key + UA 校验 + IP 限流 |
+| 部署 | Docker 单容器，Gunicorn 2 worker × 8 线程 |
 
-## 🎨 前端
-
-Apple × Material Design — 纯原生实现，零框架依赖
-
-## 🛡️ 安全
-
-UA 校验 · Shared Key 鉴权 · IP 频率限制 · 异常脱敏 · 服务器指纹隐藏 · CORS 白名单
-
-## 🍎 iOS 主屏幕
-
-支持 PWA — `apple-touch-icon` + `manifest.json` + `standalone` 模式 + 自定义图标，首次访问弹出「添加到主屏幕」引导。
-
-## 🚀 启动
+## 部署
 
 ```bash
 docker compose up -d --build
 ```
 
-## ⚙️ 环境变量
+需要环境变量：
 
-| 变量 | 说明 | 默认 |
-|---|---|---|
-| `JINTOKEN` | 金十 MCP Bearer Token | *必填* |
-| `API_SECRET` | API 鉴权 key | `caimai-secret-change-me` |
-| `RATE_LIMIT` | 每分钟请求上限 | `200` |
-| `CORS_ORIGINS` | CORS 白名单 | `*` |
-| `FLASK_DEBUG` | 设 `1` 开启调试 | `0` |
+| 变量 | 说明 |
+|---|---|
+| `JINTOKEN` | 金十 Token（必填） |
+| `API_SECRET` | 接口鉴权 key |
 
-## 📂 目录
+完整列表见 [docker-compose.yml](docker-compose.yml)。
 
+## API
+
+所有接口需要 `?key=API_SECRET`。
+
+| 路径 | 数据 |
+|---|---|
+| `/api/flash` | 快讯列表 |
+| `/api/news` | 资讯列表 |
+| `/api/quote/XAUUSD` | 品种行情 |
+| `/api/kline/XAUUSD` | 品种蜡烛图 |
+| `/api/calendar` | 财经日历 |
+| `/api/stream/flash` | 实时 SSE 流 |
+| `/api/health` | 健康检查 |
+
+## 项目结构
+
+```text
+backend/    → Flask API、MCP 客户端、鉴权
+frontend/   → HTML、CSS、JS、图标、manifest
 ```
-caimai-pulse/
-├── run.py                 ← 入口
-├── Dockerfile
-├── docker-compose.yml
-├── backend/
-│   ├── config.py          ← 环境变量 / 路径
-│   ├── auth.py            ← 鉴权 / UA / 限流
-│   ├── mcp_client.py      ← 金十 SSE MCP 客户端
-│   └── app.py             ← Flask API / SSE 端点
-└── frontend/
-    ├── index.html
-    ├── manifest.json
-    ├── css/style.css
-    ├── js/app.js
-    └── icons/
-```
 
-## 📡 API
+## 许可
 
-> 所有接口需要 `?key=API_SECRET`
-
-| 方法 | 路径 | 说明 |
-|---|---|---|
-| GET | `/api/flash` | 快讯（`cursor`分页） |
-| GET | `/api/flash/search?keyword=` | 搜索快讯 |
-| GET | `/api/news` | 资讯（`cursor`分页） |
-| GET | `/api/news/search?keyword=` | 搜索资讯 |
-| GET | `/api/news/:id` | 资讯详情 |
-| GET | `/api/quote/:code` | 品种实时行情 |
-| GET | `/api/kline/:code?count=` | 品种K线 |
-| GET | `/api/calendar` | 财经日历 |
-| GET | `/api/stream/flash` | SSE 实时快讯流 |
-| GET | `/api/health` | 健康检查 |
-
-## 📊 支持品种
-
-`XAUUSD` `XAGUSD` `USOIL` `UKOIL` `COPPER` `USDJPY` `EURUSD` `USDCNH`
-
-## 📄 许可
-
-MIT + Non-Commercial — 可自由使用、修改、分发，**禁止商业用途**。详见 [LICENSE](LICENSE)。
+MIT + Non-Commercial，禁止商业用途。
