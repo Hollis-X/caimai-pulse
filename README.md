@@ -1,122 +1,98 @@
-# 财脉 Pulse
+<picture align="center"><source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.herokuapp.com?font=SF+Pro+Display&size=28&duration=3500&pause=500&color=5B9BD5&center=true&vCenter=true&width=435&lines=财脉+Pulse+%F0%9F%93%88" /><source media="(prefers-color-scheme: light)" srcset="https://readme-typing-svg.herokuapp.com?font=SF+Pro+Display&size=28&duration=3500&pause=500&color=1C1C1E&center=true&vCenter=true&width=435&lines=财脉+Pulse+%F0%9F%93%88" /><img alt="财脉 Pulse" src="https://readme-typing-svg.herokuapp.com?font=SF+Pro+Display&size=28&duration=3500&pause=500&color=1C1C1E&center=true&vCenter=true&width=435&lines=%E8%B4%A2%E8%84%89+Pulse+%F0%9F%93%88" /></picture>
 
-实时财经快讯 / 资讯 / 行情 / 日历 — 移动端优先，金十 MCP 驱动。
+<p align="center"><b>实时财经快讯 · 资讯 · 行情 · 日历</b><br>移动端优先 · 金十 MCP 驱动 · 零前端框架</p>
 
-## 技术栈
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  <img src="https://img.shields.io/badge/license-MIT%2BNC-lightgrey?style=for-the-badge" />
+</p>
 
-| 层 | 技术 |
+---
+
+## ⚡ 实时快讯推送
+
+快讯每 **5 秒** 从金十 MCP 拉取，通过 **SSE** 实时推送至浏览器：
+
+- 📍 你在页面顶部 → 新快讯自动淡入插入
+- 📜 你已向下滚动 → 顶部悬浮提示「N 条新快讯」+ 提示音
+- 🔄 断线 10 秒自动重连 · 页面隐藏自动断开
+- 🔒 最大 10 连接 · 单连接 30 分钟超时
+
+## 📰 资讯 · 📈 行情 · 📅 日历
+
+| 模块 | 功能 |
 |---|---|
-| 前端 | 原生 HTML/CSS/JS，Apple × Material Design，零框架 |
-| 后端 | Flask + Gunicorn，SSE 实时推送 |
-| 数据 | [金十 MCP](https://mcp.jin10.com/mcp)，Bearer Token 认证 |
-| 部署 | Docker，单容器，Python 3.11 |
-| 安全 | UA 校验 / 频率限制 / Shared Key 鉴权 / 异常脱敏 |
+| 📰 资讯 | 卡片列表 + 右滑详情页 + 关键词搜索 + Markdown 链接自动解析 |
+| 📈 行情 | 8 品种实时报价 + SVG 蜡烛图（红涨绿跌，带上下影线） |
+| 📅 日历 | 249 条财经事件 · 重要性星级标注 · 前值/预期/公布对比 |
 
-## 目录结构
+## 🛡️ 安全
+
+UA 校验 · Shared Key 鉴权 · IP 频率限制 · 异常脱敏 · 服务器指纹隐藏 · CORS 白名单
+
+## 🍎 iOS 主屏幕
+
+支持 PWA — `apple-touch-icon` + `manifest.json` + `standalone` 模式 + 自定义图标，首次访问弹出「添加到主屏幕」引导。
+
+## 🚀 启动
+
+```bash
+docker compose up -d --build
+```
+
+## ⚙️ 环境变量
+
+| 变量 | 说明 | 默认 |
+|---|---|---|
+| `JINTOKEN` | 金十 MCP Bearer Token | *必填* |
+| `API_SECRET` | API 鉴权 key | `caimai-secret-change-me` |
+| `RATE_LIMIT` | 每分钟请求上限 | `200` |
+| `CORS_ORIGINS` | CORS 白名单 | `*` |
+| `FLASK_DEBUG` | 设 `1` 开启调试 | `0` |
+
+## 📂 目录
 
 ```
 caimai-pulse/
-├── run.py                    # 开发/生产共用入口
+├── run.py                 ← 入口
 ├── Dockerfile
 ├── docker-compose.yml
-├── requirements.txt
 ├── backend/
-│   ├── config.py             # 环境变量 & 路径
-│   ├── auth.py               # 鉴权 / UA / 限流
-│   ├── mcp_client.py         # 金十 MCP SSE 客户端
-│   └── app.py                # Flask API & SSE
+│   ├── config.py          ← 环境变量 / 路径
+│   ├── auth.py            ← 鉴权 / UA / 限流
+│   ├── mcp_client.py      ← 金十 SSE MCP 客户端
+│   └── app.py             ← Flask API / SSE 端点
 └── frontend/
     ├── index.html
     ├── manifest.json
     ├── css/style.css
     ├── js/app.js
     └── icons/
-        ├── xm.png
-        └── xm.svg
 ```
 
-## 启动
+## 📡 API
 
-### Docker（推荐）
-
-```bash
-docker compose up -d --build
-```
-
-或：
-
-```bash
-docker run -d --name caimai-pulse -p 5000:5000 \
-  -e JIN10_TOKEN="sk-xxx" \
-  -e API_SECRET="your-secret" \
-  --restart unless-stopped \
-  caimai-pulse
-```
-
-### 本地开发
-
-```bash
-pip install -r requirements.txt
-FLASK_DEBUG=1 python run.py
-```
-
-## 环境变量
-
-| 变量 | 必填 | 说明 |
-|---|---|---|
-| `JIN10_TOKEN` | ✅ | 金十 MCP Bearer Token |
-| `API_SECRET` | ❌ | API 鉴权 key（默认 `caimai-secret-change-me`） |
-| `RATE_LIMIT` | ❌ | 每分钟请求上限（默认 200） |
-| `CORS_ORIGINS` | ❌ | CORS 白名单（默认 `*`） |
-| `FLASK_DEBUG` | ❌ | 设为 `1` 开启调试模式 |
-
-## API 列表
-
-所有 API 需要 `?key=API_SECRET` 鉴权。
+> 所有接口需要 `?key=API_SECRET`
 
 | 方法 | 路径 | 说明 |
 |---|---|---|
-| GET | `/api/flash` | 快讯列表（支持 `cursor` 分页） |
+| GET | `/api/flash` | 快讯（`cursor`分页） |
 | GET | `/api/flash/search?keyword=` | 搜索快讯 |
-| GET | `/api/news` | 资讯列表（支持 `cursor` 分页） |
+| GET | `/api/news` | 资讯（`cursor`分页） |
 | GET | `/api/news/search?keyword=` | 搜索资讯 |
 | GET | `/api/news/:id` | 资讯详情 |
 | GET | `/api/quote/:code` | 品种实时行情 |
 | GET | `/api/kline/:code?count=` | 品种K线 |
 | GET | `/api/calendar` | 财经日历 |
-| GET | `/api/health` | 健康检查（无需鉴权） |
-| GET | `/api/stream/flash` | SSE 实时快讯推送 |
+| GET | `/api/stream/flash` | SSE 实时快讯流 |
+| GET | `/api/health` | 健康检查 |
 
-## SSE 实时推送
+## 📊 支持品种
 
-- 每 5 秒拉取金十最新快讯
-- 建立基线后仅推送增量
-- 心跳 25 秒（无新数据时）
-- 断线 10 秒自动重连
-- 页面隐藏自动断开
+`XAUUSD` `XAGUSD` `USOIL` `UKOIL` `COPPER` `USDJPY` `EURUSD` `USDCNH`
 
-### SSE 保护
-
-| 参数 | 值 |
-|---|---|
-| 最大在线连接 | 10 |
-| 单连接最长时间 | 30 分钟 |
-| 超过限制 | HTTP 503 |
-
-## 功能特性
-
-- ⚡ 快讯实时推送 + 智能插入（顶部自动淡入 / 滚离时悬浮提示 + 提示音）
-- 📰 资讯卡片 + 右滑详情页 + 关键词搜索
-- 📈 8 品种行情卡片 + SVG 蜡烛图
-- 📅 财经日历重要性标注
-- 🔒 UA 校验 / shared key 鉴权 / IP 限流
-- 🍎 iOS PWA 主屏幕安装引导
-- 📱 移动端优先，桌面端 430px 居中
-
-## 支持品种
-
-XAUUSD · XAGUSD · USOIL · UKOIL · COPPER · USDJPY · EURUSD · USDCNH
-
-## 许可
+## 📄 许可
 
 MIT + Non-Commercial — 可自由使用、修改、分发，**禁止商业用途**。详见 [LICENSE](LICENSE)。
