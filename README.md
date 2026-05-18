@@ -7,8 +7,6 @@
   <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/license-MIT%2BNC-lightgrey?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/frontend-Vanilla_JS%2BCSS-yellow?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/design-Apple×Material-007AFF?style=for-the-badge" />
 </p>
 
 ---
