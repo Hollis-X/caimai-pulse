@@ -119,4 +119,4 @@ XAUUSD · XAGUSD · USOIL · UKOIL · COPPER · USDJPY · EURUSD · USDCNH
 
 ## 许可
 
-MIT
+MIT + Non-Commercial — 可自由使用、修改、分发，**禁止商业用途**。详见 [LICENSE](LICENSE)。
