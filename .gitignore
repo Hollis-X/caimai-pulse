@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.DS_Store
+data/
+*.db
+frontend/icons/xm.png
+frontend/icons/xm.svg
+frontend/icons/apple-touch-icon.*
+*.tar.gz
+/tmp/
+app.min.js

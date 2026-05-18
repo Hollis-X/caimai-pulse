@@ -1,0 +1,22 @@
+{
+  "name": "财脉 Pulse",
+  "short_name": "财脉",
+  "description": "实时财经快讯、资讯、行情与财经日历",
+  "start_url": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#F2F2F7",
+  "theme_color": "#007AFF",
+  "scope": "/",
+  "orientation": "portrait",
+  "prefer_related_applications": false,
+  "categories": ["finance", "news"],
+  "icons": [
+    {
+      "src": "/icons/xm.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
